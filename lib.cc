@@ -281,14 +281,10 @@ public:
     }
 };
 
-bool cmp( const NodePtr & aLhs, const NodePtr & aRhs )
-{
-    return (*aLhs) > (*aRhs);
-}
-
 void Solver::solve( std::ostream & aOut, const Board & aBoard, const State & aStartState, const State & aGoalState, unsigned short iMinNumberOfSolution )
 {
-    priority_queue< NodePtr, vector< NodePtr >, bool(*)( const NodePtr&, const NodePtr&) > lOpenSet1( &cmp );
+    priority_queue< NodePtr, vector< NodePtr >, bool(*)( const NodePtr&, const NodePtr&) > lOpenSet1( 
+        [](const NodePtr& aLhs, const NodePtr& aRhs){ return *aLhs > *aRhs;} );
     lOpenSet1.push( NodePtr( new Node(aStartState, aBoard.distance( aStartState, aGoalState), 0) ) );
 
     while ( ! lOpenSet1.empty() && iMinNumberOfSolution != 0 )
