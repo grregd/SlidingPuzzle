@@ -184,11 +184,8 @@ void test_solve1()
         , State("102345")
                               };
 
-    vector< State >::const_iterator lBeg = lStarts.begin();
-    vector< State >::const_iterator lEnd = lStarts.end();
-    for ( ; lBeg != lEnd; ++lBeg )
+    for ( const State & lStart: lStarts )
     {
-        const State & lStart = *lBeg;
         cout << "Start: " << endl;
         lBoard.draw(lStart, cout);
 
@@ -344,7 +341,9 @@ protected:
         while ( next_permutation( lString.begin(), lString.end() ) )
         {
             unique_lock<mutex> lLock( iPermutationsMutex );
-            iPermutations.push_back( lString );
+            static int a = 0;
+            if (!(++a%100000))
+                iPermutations.push_back( lString );
         }
         cout << "Finished generating permutations. " << iPermutations.size() << endl;
     }

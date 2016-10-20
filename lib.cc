@@ -164,11 +164,9 @@ list< State > Board::getNeighborStates( const State & aState ) const
     short lCurrentIndex = aState.getBlank();
     list< short > lEnds = iGrid.getEnds( lCurrentIndex );
 
-    list< short >::const_iterator lBeg = lEnds.begin();
-    list< short >::const_iterator lEnd = lEnds.end();
-    for ( ; lBeg != lEnd ; ++lBeg )
+    for ( const auto & lBeg: lEnds )
     {
-        lResult.push_back( aState.move( *lBeg) );
+        lResult.push_back( aState.move( lBeg) );
     }
 
     return lResult;
@@ -317,11 +315,8 @@ void Solver::solve( std::ostream & aOut, const Board & aBoard, const State & aSt
         }
 
         list< State > lNeighbors = aBoard.getNeighborStates( lCurrentState );
-        list< State >::const_iterator lBeg = lNeighbors.begin();
-        list< State >::const_iterator lEnd = lNeighbors.end();
-        for ( ; lBeg != lEnd; ++lBeg )
+	for ( const auto & lNeighborState: lNeighbors )
         {
-            State lNeighborState( *lBeg );
             if ( !visited( lNeighborState ) )
             {
                 lOpenSet1.push( NodePtr( new Node(lNeighborState, aBoard.distance(lNeighborState, aGoalState), lCurrentNode) ) );
